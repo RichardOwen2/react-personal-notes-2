@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { getActiveNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
-import AddNoteButton from '../components/buttons/AddNoteButton'
+import AddNoteButton from '../components/buttons/AddNoteButton';
 
 function HomePageWrapper() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,7 +12,7 @@ function HomePageWrapper() {
     setSearchParams({ keyword });
   }
 
-  return <HomePage defaultKeyword={keyword} keywordChange={changeSearchParams} />
+  return <HomePage defaultKeyword={keyword} keywordChange={changeSearchParams} />;
 }
 
 class HomePage extends React.Component {
@@ -22,23 +22,22 @@ class HomePage extends React.Component {
     this.state = {
       notes: getActiveNotes(),
       keyword: props.defaultKeyword || '',
-    }
+    };
 
     this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
   }
 
   onKeywordChangeHandler(keyword) {
-    this.setState(() => {
-      return {
-        keyword,
-      }
-    });
+    this.setState(() => ({
+      keyword,
+    }));
 
-    this.props.keywordChange(keyword);
+    const { keywordChange } = this.props;
+    keywordChange(keyword);
   }
 
   render() {
-    const { notes:stateNotes, keyword } = this.state;
+    const { notes: stateNotes, keyword } = this.state;
 
     const notes = stateNotes.filter((note) => note.title.toLowerCase().includes(keyword.toLowerCase()));
 

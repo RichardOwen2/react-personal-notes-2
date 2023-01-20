@@ -8,7 +8,7 @@ function Navigation() {
         <li><Link to="/archives">Arsip</Link></li>
       </ul>
     </nav>
-  )
+  );
 }
 
 export default Navigation;

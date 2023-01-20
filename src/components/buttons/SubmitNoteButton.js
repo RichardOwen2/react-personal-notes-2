@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { RiCheckLine } from "react-icons/ri";
+import { RiCheckLine } from 'react-icons/ri';
 
 function SubmitNoteButton({ onSubmit }) {
   return (
@@ -15,6 +15,6 @@ function SubmitNoteButton({ onSubmit }) {
 
 SubmitNoteButton.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-}
+};
 
 export default SubmitNoteButton;

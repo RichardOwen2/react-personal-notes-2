@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getNote, deleteNote, archiveNote, unarchiveNote } from '../utils/local-data';
+import {
+  getNote, deleteNote, archiveNote, unarchiveNote,
+} from '../utils/local-data';
 import { showFormattedDate } from '../utils';
 import ArchiveNoteButton from '../components/buttons/ArchiveNoteButton';
 import DeleteNoteButton from '../components/buttons/DeleteNoteButton';
@@ -46,7 +48,7 @@ class DetailPage extends React.Component {
 
     if (!note) {
       return <NotFoundPage />;
-    } 
+    }
 
     const { title, body, createdAt } = note;
 

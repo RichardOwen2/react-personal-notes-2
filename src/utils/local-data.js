@@ -48,14 +48,14 @@ function getAllNotes() {
 }
 
 function getNote(id) {
-  if(!id) {
+  if (!id) {
     return null;
   }
 
   const foundedNote = notes.find((note) => note.id === id);
 
-  if(!foundedNote) {
-    return null
+  if (!foundedNote) {
+    return null;
   }
 
   return foundedNote;

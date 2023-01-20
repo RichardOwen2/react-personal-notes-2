@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HiPlus } from "react-icons/hi";
+import { HiPlus } from 'react-icons/hi';
 
 function AddNoteButton() {
   return (

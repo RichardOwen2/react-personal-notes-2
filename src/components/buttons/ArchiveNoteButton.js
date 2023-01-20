@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { MdOutlineArchive } from "react-icons/md";
+import { MdOutlineArchive } from 'react-icons/md';
 
 function ArchiveNoteButton({ onArchive }) {
   return (
@@ -15,6 +15,6 @@ function ArchiveNoteButton({ onArchive }) {
 
 ArchiveNoteButton.propTypes = {
   onArchive: PropTypes.func.isRequired,
-}
+};
 
 export default ArchiveNoteButton;

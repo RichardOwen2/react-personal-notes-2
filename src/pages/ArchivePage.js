@@ -11,7 +11,7 @@ function ArchivePageWrapper() {
     setSearchParams({ keyword });
   }
 
-  return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams} />
+  return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams} />;
 }
 
 class ArchivePage extends React.Component {
@@ -21,23 +21,22 @@ class ArchivePage extends React.Component {
     this.state = {
       notes: getArchivedNotes(),
       keyword: props.defaultKeyword || '',
-    }
+    };
 
     this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
   }
 
   onKeywordChangeHandler(keyword) {
-    this.setState(() => {
-      return {
-        keyword,
-      }
-    });
+    this.setState(() => ({
+      keyword,
+    }));
 
-    this.props.keywordChange(keyword);
+    const { keywordChange } = this.props;
+    keywordChange(keyword);
   }
 
   render() {
-    const { notes:stateNotes, keyword } = this.state;
+    const { notes: stateNotes, keyword } = this.state;
 
     const notes = stateNotes.filter((note) => note.title.toLowerCase().includes(keyword.toLowerCase()));
 

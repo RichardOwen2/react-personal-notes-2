@@ -14,6 +14,7 @@ function NotesList({ notes }) {
     <div className="notes-list">
       {
         notes.map((note) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
           <NoteItem {...note} key={note.id} />
         ))
       }
@@ -22,7 +23,8 @@ function NotesList({ notes }) {
 }
 
 NotesList.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   notes: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
+};
 
 export default NotesList;
