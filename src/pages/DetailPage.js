@@ -1,5 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import autoBind from 'react-autobind';
+import PropTypes from 'prop-types';
 import {
   getNote, deleteNote, archiveNote, unarchiveNote,
 } from '../utils/local-data';
@@ -23,8 +25,7 @@ class DetailPage extends React.Component {
       note: getNote(id),
     };
 
-    this.onArchiveHandler = this.onArchiveHandler.bind(this);
-    this.onDeleteHandler = this.onDeleteHandler.bind(this);
+    autoBind(this);
   }
 
   onArchiveHandler() {
@@ -65,5 +66,9 @@ class DetailPage extends React.Component {
     );
   }
 }
+
+DetailPage.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default DetailPageWrapper;

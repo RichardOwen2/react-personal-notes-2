@@ -1,4 +1,6 @@
 import React from 'react';
+import autoBind from 'react-autobind';
+import PropTypes from 'prop-types';
 import { useSearchParams } from 'react-router-dom';
 import { getArchivedNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
@@ -23,7 +25,7 @@ class ArchivePage extends React.Component {
       keyword: props.defaultKeyword || '',
     };
 
-    this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+    autoBind(this);
   }
 
   onKeywordChangeHandler(keyword) {
@@ -49,5 +51,10 @@ class ArchivePage extends React.Component {
     );
   }
 }
+
+ArchivePage.propTypes = {
+  defaultKeyword: PropTypes.string.isRequired,
+  keywordChange: PropTypes.func.isRequired,
+};
 
 export default ArchivePageWrapper;

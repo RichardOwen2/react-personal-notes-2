@@ -1,4 +1,5 @@
 import React from 'react';
+import autoBind from 'react-autobind';
 import { addNote } from '../utils/local-data';
 import AddNoteInput from '../components/AddNoteInput';
 import SubmitNoteButton from '../components/buttons/SubmitNoteButton';
@@ -12,9 +13,7 @@ class AddNote extends React.Component {
       body: '',
     };
 
-    this.onTitleChange = this.onTitleChange.bind(this);
-    this.onBodyChange = this.onBodyChange.bind(this);
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    autoBind(this);
   }
 
   onTitleChange(event) {
