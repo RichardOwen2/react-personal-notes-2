@@ -8,15 +8,6 @@
         "airbnb"
     ],
     "overrides": [
-        {
-            "files": ["src/pages/*.js"],
-            "rules": {
-                "react/jsx-no-bind": "off",
-                "react/prop-types": "off",
-                "no-shadow": "off",
-                "max-len": "off"
-            }
-        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -26,6 +17,8 @@
         "react"
     ],
     "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "no-alert": 0,
+        "no-shadow": 0
     }
 }

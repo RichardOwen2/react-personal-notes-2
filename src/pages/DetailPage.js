@@ -1,74 +1,52 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import autoBind from 'react-autobind';
-import PropTypes from 'prop-types';
-import {
-  getNote, deleteNote, archiveNote, unarchiveNote,
-} from '../utils/local-data';
-import { showFormattedDate } from '../utils';
+
+import NotFoundPage from './NotFoundPage';
+import LoadingMessage from '../components/LoadingMessage';
 import ArchiveNoteButton from '../components/buttons/ArchiveNoteButton';
 import DeleteNoteButton from '../components/buttons/DeleteNoteButton';
-import NotFoundPage from './NotFoundPage';
 
-function DetailPageWrapper() {
+import { getNote } from '../utils/network-data';
+import { showFormattedDate } from '../utils';
+
+function DetailPage() {
+  const [note, setNote] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
   const { id } = useParams();
-  return <DetailPage id={id} />;
-}
 
-class DetailPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const { id } = this.props;
-
-    this.state = {
-      note: getNote(id),
+  React.useEffect(() => {
+    const fetchNote = async () => {
+      const { data } = await getNote(id);
+      setNote(data);
+      setLoading(false);
     };
 
-    autoBind(this);
+    fetchNote();
+  }, []);
+
+  if (loading) {
+    return <LoadingMessage />;
   }
 
-  onArchiveHandler() {
-    const { note } = this.state;
-    const { id, archived } = note;
-    if (archived) {
-      unarchiveNote(id);
-    } else {
-      archiveNote(id);
-    }
+  if (!note) {
+    return <NotFoundPage />;
   }
 
-  onDeleteHandler() {
-    const { note } = this.state;
-    const { id } = note;
-    deleteNote(id);
-  }
+  const {
+    archived, title, body, createdAt,
+  } = note;
 
-  render() {
-    const { note } = this.state;
-
-    if (!note) {
-      return <NotFoundPage />;
-    }
-
-    const { title, body, createdAt } = note;
-
-    return (
-      <section className="detail-page">
-        <h3 className="detail-page__title">{title}</h3>
-        <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
-        <div className="detail-page__body">{body}</div>
-        <div className="detail-page__action">
-          <ArchiveNoteButton onArchive={this.onArchiveHandler} />
-          <DeleteNoteButton onDelete={this.onDeleteHandler} />
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className="detail-page">
+      <h3 className="detail-page__title">{title}</h3>
+      <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
+      <div className="detail-page__body">{body}</div>
+      <div className="detail-page__action">
+        <ArchiveNoteButton archive={archived} id={id} />
+        <DeleteNoteButton id={id} />
+      </div>
+    </section>
+  );
 }
 
-DetailPage.propTypes = {
-  id: PropTypes.string.isRequired,
-};
-
-export default DetailPageWrapper;
+export default DetailPage;

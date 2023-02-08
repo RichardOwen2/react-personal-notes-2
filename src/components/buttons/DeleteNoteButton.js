@@ -1,20 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MdDeleteOutline } from 'react-icons/md';
+import { deleteNote } from '../../utils/network-data';
 
-function DeleteNoteButton({ onDelete }) {
+function DeleteNoteButton({ id }) {
+  const navigate = useNavigate();
+
+  const onDelete = async (id) => {
+    const { error } = await deleteNote(id);
+    if (!error) {
+      navigate('/');
+    } else {
+      alert('Gagal Menghapus Notes!');
+    }
+  };
+
   return (
-    <Link to="/">
-      <button className="action" type="button" title="simpan" onClick={() => onDelete()}>
-        <MdDeleteOutline />
-      </button>
-    </Link>
+    <button className="action" type="button" title="delete" onClick={() => onDelete(id)}>
+      <MdDeleteOutline />
+    </button>
   );
 }
 
 DeleteNoteButton.propTypes = {
-  onDelete: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default DeleteNoteButton;

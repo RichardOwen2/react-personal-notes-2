@@ -1,50 +1,30 @@
 import React from 'react';
-import autoBind from 'react-autobind';
-import { addNote } from '../utils/local-data';
+import { addNote } from '../utils/network-data';
+import useInput from '../hooks/useInput';
 import AddNoteInput from '../components/AddNoteInput';
 import SubmitNoteButton from '../components/buttons/SubmitNoteButton';
 
-class AddNote extends React.Component {
-  constructor(props) {
-    super(props);
+function AddNote() {
+  const [title, onTitleChange] = useInput('');
+  const [body, onBodyChange] = useInput('');
 
-    this.state = {
-      title: '',
-      body: '',
-    };
+  const onSubmit = async () => {
+    await addNote({ title, body });
+  };
 
-    autoBind(this);
-  }
-
-  onTitleChange(event) {
-    this.setState({ title: event.target.value });
-  }
-
-  onBodyChange(event) {
-    this.setState({ body: event.target.value });
-  }
-
-  onSubmitHandler() {
-    addNote(this.state);
-  }
-
-  render() {
-    const { title, body } = this.state;
-
-    return (
-      <div className="add-new-page">
-        <AddNoteInput
-          title={title}
-          body={body}
-          onTitleChange={this.onTitleChange}
-          onBodyChange={this.onBodyChange}
-        />
-        <div className="add-new-page__action">
-          <SubmitNoteButton onSubmit={this.onSubmitHandler} />
-        </div>
+  return (
+    <div className="add-new-page">
+      <AddNoteInput
+        title={title}
+        body={body}
+        onTitleChange={onTitleChange}
+        onBodyChange={onBodyChange}
+      />
+      <div className="add-new-page__action">
+        <SubmitNoteButton onSubmit={onSubmit} />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default AddNote;

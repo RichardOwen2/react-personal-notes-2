@@ -74,12 +74,12 @@ main {
   padding: 16px 8px;
 }
 
-.notes-list-empty {
+.notes-list-empty, .loading {
   margin-top: 32px;
   padding: 16px 8px;
 }
 
-.notes-list-empty p {
+.notes-list-empty p, .loading p {
   text-align: center;
   color: var(--on-background-grey);
 }

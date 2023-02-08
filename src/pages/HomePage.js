@@ -1,68 +1,48 @@
 import React from 'react';
-import autoBind from 'react-autobind';
 import { useSearchParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { getActiveNotes } from '../utils/local-data';
+import { getActiveNotes } from '../utils/network-data';
+import LocaleContext from '../contexts/LocaleContext';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 import AddNoteButton from '../components/buttons/AddNoteButton';
 
-function HomePageWrapper() {
+function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const keyword = searchParams.get('keyword');
-  function changeSearchParams(keyword) {
-    setSearchParams({ keyword });
-  }
+  const [notes, setNotes] = React.useState([]);
+  const [keyword, setKeyword] = React.useState(() => searchParams.get('keyword') || '');
+  const [loading, setLoading] = React.useState(true);
 
-  return <HomePage defaultKeyword={keyword} keywordChange={changeSearchParams} />;
-}
+  const { locale } = React.useContext(LocaleContext);
 
-class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      notes: getActiveNotes(),
-      keyword: props.defaultKeyword || '',
+  React.useEffect(() => {
+    const fetchNotes = async () => {
+      const { data } = await getActiveNotes();
+      setNotes(data);
+      setLoading(false);
     };
 
-    autoBind(this);
-  }
+    fetchNotes();
+  }, []);
 
-  onKeywordChangeHandler(keyword) {
-    this.setState(() => ({
-      keyword,
-    }));
+  const onKeywordChangeHandler = (keyword) => {
+    setSearchParams({ keyword });
+    setKeyword(keyword);
+  };
 
-    const { keywordChange } = this.props;
-    keywordChange(keyword);
-  }
+  const filteredNotes = notes.filter((note) => note.title.toLowerCase().includes(
+    keyword.toLowerCase(),
+  ));
 
-  render() {
-    const { notes: stateNotes, keyword } = this.state;
-
-    const notes = stateNotes.filter((note) => note.title.toLowerCase().includes(keyword.toLowerCase()));
-
-    return (
-      <section className="homepage">
-        <h2>Catatan Aktif</h2>
-        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
-        <NotesList notes={notes} />
-        <div className="homepage__action">
-          <AddNoteButton />
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className="homepage">
+      <h2>{locale === 'id' ? 'Catatan Aktif' : 'Active Note'}</h2>
+      <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
+      <NotesList notes={filteredNotes} loading={loading} />
+      <div className="homepage__action">
+        <AddNoteButton />
+      </div>
+    </section>
+  );
 }
 
-HomePage.propTypes = {
-  defaultKeyword: PropTypes.string,
-  keywordChange: PropTypes.func.isRequired,
-};
-
-HomePage.defaultProps = {
-  defaultKeyword: '',
-};
-
-export default HomePageWrapper;
+export default HomePage;

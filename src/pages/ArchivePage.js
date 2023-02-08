@@ -1,64 +1,50 @@
 import React from 'react';
-import autoBind from 'react-autobind';
-import PropTypes from 'prop-types';
 import { useSearchParams } from 'react-router-dom';
-import { getArchivedNotes } from '../utils/local-data';
+import { getArchivedNotes } from '../utils/network-data';
+import LocaleContext from '../contexts/LocaleContext';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
+import AddNoteButton from '../components/buttons/AddNoteButton';
 
-function ArchivePageWrapper() {
+function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const keyword = searchParams.get('keyword');
-  function changeSearchParams(keyword) {
-    setSearchParams({ keyword });
-  }
+  const [notes, setNotes] = React.useState([]);
+  const [keyword, setKeyword] = React.useState(() => searchParams.get('keyword') || '');
+  const [loading, setLoading] = React.useState(true);
 
-  return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams} />;
-}
+  const { locale } = React.useContext(LocaleContext);
 
-class ArchivePage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      notes: getArchivedNotes(),
-      keyword: props.defaultKeyword || '',
+  React.useEffect(() => {
+    const fetchNotes = async () => {
+      const { data } = await getArchivedNotes();
+      if (data !== null) {
+        setNotes(data);
+      }
+      setLoading(false);
     };
 
-    autoBind(this);
-  }
+    fetchNotes();
+  }, []);
 
-  onKeywordChangeHandler(keyword) {
-    this.setState(() => ({
-      keyword,
-    }));
+  const onKeywordChangeHandler = (keyword) => {
+    setSearchParams(keyword);
+    setKeyword(keyword);
+  };
 
-    const { keywordChange } = this.props;
-    keywordChange(keyword);
-  }
+  const filteredNotes = notes.filter((note) => note.title.toLowerCase().includes(
+    keyword.toLowerCase(),
+  ));
 
-  render() {
-    const { notes: stateNotes, keyword } = this.state;
-
-    const notes = stateNotes.filter((note) => note.title.toLowerCase().includes(keyword.toLowerCase()));
-
-    return (
-      <section className="archives-page">
-        <h2>Catatan Arsip</h2>
-        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
-        <NotesList notes={notes} />
-      </section>
-    );
-  }
+  return (
+    <section className="homepage">
+      <h2>{locale === 'id' ? 'Catatan Arsip' : 'Archived Note'}</h2>
+      <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
+      <NotesList notes={filteredNotes} loading={loading} />
+      <div className="homepage__action">
+        <AddNoteButton />
+      </div>
+    </section>
+  );
 }
 
-ArchivePage.propTypes = {
-  defaultKeyword: PropTypes.string,
-  keywordChange: PropTypes.func.isRequired,
-};
-
-ArchivePage.defaultProps = {
-  defaultKeyword: '',
-};
-
-export default ArchivePageWrapper;
+export default HomePage;

@@ -2,8 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NoteItem from './NoteItem';
 import EmptyMessage from './EmptyMessage';
+import LoadingMessage from './LoadingMessage';
 
-function NotesList({ notes }) {
+function NotesList({ notes, loading }) {
+  if (loading) {
+    return (
+      <LoadingMessage />
+    );
+  }
+
   if (notes.length === 0) {
     return (
       <EmptyMessage />
@@ -25,6 +32,7 @@ function NotesList({ notes }) {
 NotesList.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default NotesList;

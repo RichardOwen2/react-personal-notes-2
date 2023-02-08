@@ -1,20 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MdOutlineArchive } from 'react-icons/md';
+import { archiveNote, unarchiveNote } from '../../utils/network-data';
 
-function ArchiveNoteButton({ onArchive }) {
+function ArchiveNoteButton({ archive, id }) {
+  const navigate = useNavigate();
+
+  const archiveHandler = async (archive, id) => {
+    if (archive) {
+      const { error } = await unarchiveNote(id);
+      return error;
+    }
+    const { error } = await archiveNote(id);
+    return error;
+  };
+
+  const onArchive = async (id) => {
+    const error = await archiveHandler(archive, id);
+    if (!error) {
+      navigate('/');
+    } else {
+      alert('Gagal Mengarsip Notes!');
+    }
+  };
+
   return (
-    <Link to="/">
-      <button className="action" type="button" title="simpan" onClick={() => onArchive()}>
-        <MdOutlineArchive />
-      </button>
-    </Link>
+    <button className="action" type="button" title="arsip" onClick={() => onArchive(id)}>
+      <MdOutlineArchive />
+    </button>
   );
 }
 
 ArchiveNoteButton.propTypes = {
-  onArchive: PropTypes.func.isRequired,
+  archive: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default ArchiveNoteButton;
