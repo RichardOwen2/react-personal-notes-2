@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../utils/network-data';
 import LocaleContext from '../contexts/LocaleContext';
 import InputRegister from '../components/InputRegister';
 
 function RegisterPage() {
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   const navigate = useNavigate();
 
   const ind = locale === 'id';

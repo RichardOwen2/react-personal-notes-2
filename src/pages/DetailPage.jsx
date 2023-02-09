@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import NotFoundPage from './NotFoundPage';
@@ -10,11 +10,11 @@ import { getNote } from '../utils/network-data';
 import { showFormattedDate } from '../utils';
 
 function DetailPage() {
-  const [note, setNote] = React.useState({});
-  const [loading, setLoading] = React.useState(true);
+  const [note, setNote] = useState({});
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchNote = async () => {
       const { data } = await getNote(id);
       setNote(data);

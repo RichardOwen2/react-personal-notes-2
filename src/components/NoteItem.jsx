@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { showFormattedDate } from '../utils';
@@ -7,7 +7,7 @@ import LocaleContext from '../contexts/LocaleContext';
 function NoteItem({
   id, title, createdAt, body,
 }) {
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <article className="note-item">

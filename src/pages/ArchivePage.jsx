@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getArchivedNotes } from '../utils/network-data';
 import LocaleContext from '../contexts/LocaleContext';
@@ -8,13 +8,13 @@ import AddNoteButton from '../components/buttons/AddNoteButton';
 
 function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [notes, setNotes] = React.useState([]);
-  const [keyword, setKeyword] = React.useState(() => searchParams.get('keyword') || '');
-  const [loading, setLoading] = React.useState(true);
+  const [notes, setNotes] = useState([]);
+  const [keyword, setKeyword] = useState(() => searchParams.get('keyword') || '');
+  const [loading, setLoading] = useState(true);
 
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchNotes = async () => {
       const { data } = await getArchivedNotes();
       if (data !== null) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { login } from '../utils/network-data';
@@ -6,7 +6,7 @@ import LocaleContext from '../contexts/LocaleContext';
 import InputLogin from '../components/InputLogin';
 
 function LoginPage({ loginSuccess }) {
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   const ind = locale === 'id';
 
   const onLogin = async ({ email, password }) => {

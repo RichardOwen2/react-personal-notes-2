@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import LocaleContext from '../contexts/LocaleContext';
 
 function Navigation() {
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   return (
     <nav className="navigation">
       <ul>

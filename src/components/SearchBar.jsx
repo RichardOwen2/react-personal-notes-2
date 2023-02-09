@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import LocaleContext from '../contexts/LocaleContext';
 
 function SearchBar({ keyword, keywordChange }) {
-  const { locale } = React.useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   return (
     <section className="search-bar">
       <input

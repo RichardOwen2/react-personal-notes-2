@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { getUserLogged, putAccessToken } from './utils/network-data';
 
@@ -20,12 +20,12 @@ import LocaleContext from './contexts/LocaleContext';
 import useToogle from './hooks/useToogle';
 
 function App() {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [theme, toggleTheme] = useToogle('theme', 'light', 'dark');
   const [locale, toggleLocale] = useToogle('locale', 'id', 'en');
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getUser = async () => {
       const { data } = await getUserLogged();
       setUser(data);
@@ -35,16 +35,16 @@ function App() {
     getUser();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  const themeContextValue = React.useMemo(() => ({
+  const themeContextValue = useMemo(() => ({
     theme,
     toggleTheme,
   }), [theme]);
 
-  const localeContextValue = React.useMemo(() => ({
+  const localeContextValue = useMemo(() => ({
     locale,
     toggleLocale,
   }), [locale]);
